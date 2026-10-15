@@ -1,0 +1,26 @@
+{
+  "name": "Oussama [Nachname]",
+  "wohnort": "Hannover",
+  "suchauftraege": [
+    {"was": "Technischer Zeichner Elektrotechnik", "wo": "Hannover", "umkreis": 25},
+    {"was": "Technischer Systemplaner Elektrotechnik", "wo": "Hannover", "umkreis": 25},
+    {"was": "CAD Elektrotechnik", "wo": "Hannover", "umkreis": 25}
+  ],
+  "ausschluesse": {
+    "zeitarbeit": true,
+    "befristet": false,
+    "max_km": 30,
+    "firmen_sperrliste": []
+  },
+  "kenntnisse": [
+    {"name": "ProVI LST", "beleg": "ProVI LST als zentrales Planungswerkzeug im LST-Großprojekt", "aliase": ["provi", "lst", "leit- und sicherungstechnik", "signaltechnik", "etcs", "bahn", "eisenbahn", "ril 819"]},
+    {"name": "BricsCAD Pro / AutoCAD", "beleg": "BricsCAD Pro, eigenes Raster-Plug-in entwickelt (DWG-kompatibel)", "aliase": ["bricscad", "autocad", "cad", "dwg", "zeichnen", "zeichner", "konstruktion"]},
+    {"name": "Datenvalidierung und Planprüfung", "beleg": "Koordination der Datenvalidierung im Planerteam (60-km-Projekt)", "aliase": ["prüfung", "pruefung", "qualität", "qualitaet", "datenpflege", "revision", "planstände", "dokumentation", "sorgfalt", "sorgfältig"]},
+    {"name": "Teamkoordination", "beleg": "Koordination eines entlang der Strecke verteilten Planerteams", "aliase": ["abstimmung", "koordination", "team", "schnittstelle", "gewerke", "kommunikation"]},
+    {"name": "Georeferenzierung / Rasterdaten", "beleg": "Raster-Plug-in: Bilder einfügen, georeferenzieren, bereinigen, vektorisieren", "aliase": ["georeferenz", "gis", "raster", "vektorisier", "bestandspläne", "bestandsplaene", "digitalisier", "scan"]},
+    {"name": "Elektrotechnik-Planung", "beleg": "Fachplaner LST (Elektrotechnik im Bahnbereich)", "aliase": ["elektrotechnik", "elektro", "stromlauf", "schaltpl", "kabel", "übersichtsplan", "uebersichtsplan", "lageplan"]},
+    {"name": "Deutsch und Arabisch", "beleg": "Deutsch (Arbeitssprache), Arabisch (Muttersprache)", "aliase": ["deutschkenntnisse", "deutsch in wort", "sprachkenntnisse", "arabisch"]}
+  ],
+  "ausbildung": "",
+  "nicht_belegt_hinweise": ["eplan", "revit", "bim", "führerschein", "fuehrerschein", "englisch", "sap", "wscad", "elcad"]
+}

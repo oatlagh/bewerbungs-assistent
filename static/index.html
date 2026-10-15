@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Stellensuche – Bewerbungs-Assistent</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root { --ink:#15181B; --ink2:#3B4148; --muted:#555B62; --line:#D5D8D0; --line2:#E3E5DF; --bg:#F1F2EE; --card:#FFFFFF; --blue:#1A44B8; --amber:#A85400; --amber2:#8A4500; --yellow:#F2C230; }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink); font-family:'IBM Plex Sans', system-ui, sans-serif; font-size:15px; line-height:1.5; }
+  a { color:var(--blue); }
+  header { background:var(--card); border-bottom:1px solid var(--line); }
+  .wrap { max-width:1240px; margin:0 auto; padding:10px 20px; }
+  .brand { display:flex; align-items:center; gap:10px; font-weight:700; font-size:17px; }
+  .logo { width:32px; height:32px; border-radius:6px; background:var(--yellow); }
+  main { max-width:1240px; margin:0 auto; padding:24px 20px 48px; display:flex; flex-direction:column; gap:20px; }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:8px; padding:20px; }
+  .mono { font-family:'IBM Plex Mono', monospace; font-size:12px; font-weight:500; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); }
+  h1 { margin:0; font-size:24px; font-weight:600; }
+  h2 { margin:0; font-size:16px; font-weight:600; }
+  form.search { display:flex; flex-wrap:wrap; gap:12px; align-items:flex-end; }
+  .field { display:flex; flex-direction:column; gap:6px; min-width:0; }
+  input, select { font:inherit; color:inherit; height:46px; padding:0 12px; border:1px solid #858B92; border-radius:6px; background:#fff; width:100%; }
+  button { font:inherit; color:inherit; cursor:pointer; }
+  .btn { min-height:46px; padding:0 20px; border:0; border-radius:6px; background:var(--blue); color:#fff; font-weight:600; }
+  .btn.sec { background:#fff; border:1px solid #858B92; color:var(--ink); font-weight:500; }
+  .chips { display:flex; flex-wrap:wrap; gap:8px; align-items:center; padding-top:14px; border-top:1px solid var(--line2); margin-top:16px; }
+  .chip { min-height:40px; padding:0 14px; border-radius:999px; border:1px solid #858B92; background:#fff; font-size:14px; font-weight:500; }
+  .chip[aria-pressed="true"] { background:var(--ink); color:#fff; border-color:var(--ink); }
+  .cols { display:flex; flex-wrap:wrap; gap:20px; align-items:flex-start; }
+  .list { flex:1 1 360px; min-width:0; display:flex; flex-direction:column; gap:10px; }
+  .detail { flex:999 1 520px; min-width:0; }
+  .job { width:100%; text-align:left; display:flex; flex-direction:column; gap:6px; padding:16px; border:1px solid var(--line); border-radius:8px; background:#fff; }
+  .job[aria-pressed="true"] { background:#EDF1FC; border-color:var(--blue); box-shadow:0 0 0 1px var(--blue); }
+  .job .t { font-weight:600; font-size:16px; line-height:1.35; }
+  .meta { display:flex; flex-wrap:wrap; gap:4px 16px; font-size:13px; color:var(--muted); }
+  .badge { padding:2px 8px; border-radius:4px; font-family:'IBM Plex Mono', monospace; font-size:11px; font-weight:500; text-transform:uppercase; letter-spacing:.06em; }
+  .badge.neu { background:var(--yellow); } .badge.ex { background:#E6E8E2; color:var(--ink2); }
+  .req { list-style:none; margin:0; padding:0; border:1px solid var(--line2); border-radius:6px; }
+  .req li { display:flex; gap:12px; padding:11px 14px; border-top:1px solid var(--line2); }
+  .req li:first-child { border-top:0; }
+  .dot { flex:0 0 18px; width:18px; height:18px; border-radius:50%; margin-top:3px; }
+  .dot.belegt { background:var(--blue); } .dot.teilweise { border:2px solid var(--amber); background:linear-gradient(90deg, transparent 50%, var(--amber) 50%); } .dot.nicht_belegt { border:2px dashed #7C828A; }
+  .note { font-size:13px; color:var(--muted); } .note.teilweise { color:var(--amber2); }
+  .desc { white-space:pre-wrap; font-size:14px; color:var(--ink2); max-height:420px; overflow:auto; padding:14px; border:1px solid var(--line2); border-radius:6px; background:#FCFCFA; }
+  .status { font-size:13px; color:var(--muted); }
+  .err { padding:12px 14px; border-radius:6px; background:#FBE9D3; color:#7A3E00; }
+  dl.facts { margin:0; display:grid; grid-template-columns:repeat(auto-fit, minmax(140px,1fr)); gap:12px 20px; padding:14px 0; border-top:1px solid var(--line2); border-bottom:1px solid var(--line2); }
+  dl.facts dt { font-family:'IBM Plex Mono', monospace; font-size:12px; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); } dl.facts dd { margin:0; }
+</style>
+</head>
+<body>
+<header><div class="wrap brand"><span class="logo"></span>Bewerbungs-Assistent <span class="status" style="margin-left:auto">Quelle: Jobsuche der Bundesagentur für Arbeit</span></div></header>
+<main>
+  <section class="card">
+    <h1 style="margin-bottom:14px">Stellensuche</h1>
+    <form class="search" id="f">
+      <div class="field" style="flex:3 1 260px"><label class="mono" for="was">Was</label><input id="was" name="was" value="Technischer Zeichner Elektrotechnik" required></div>
+      <div class="field" style="flex:2 1 180px"><label class="mono" for="wo">Wo</label><input id="wo" name="wo" value="Hannover"></div>
+      <div class="field" style="flex:1 1 120px"><label class="mono" for="umkreis">Umkreis</label><select id="umkreis" name="umkreis"><option value="10">10 km</option><option value="25" selected>25 km</option><option value="50">50 km</option></select></div>
+      <div class="field" style="flex:1 1 140px"><label class="mono" for="tage">Veröffentlicht</label><select id="tage" name="tage"><option value="7">letzte 7 Tage</option><option value="14">letzte 14 Tage</option><option value="30" selected>letzte 30 Tage</option><option value="100">alle</option></select></div>
+      <button class="btn" type="submit">Suchen</button>
+    </form>
+    <div class="chips"><span class="mono" style="margin-right:6px">Ausschlüsse</span>
+      <button type="button" class="chip" id="chip-ex" aria-pressed="true">Ausgeschlossene ausblenden (Zeitarbeit, Entfernung, Sperrliste – aus profile.json)</button>
+      <span class="status" id="hidden" style="margin-left:auto"></span>
+    </div>
+  </section>
+
+  <div id="summary" class="status"></div>
+  <div id="error"></div>
+
+  <div class="cols">
+    <section class="list" id="list" aria-label="Trefferliste"></section>
+    <article class="card detail" id="detail"><span class="status">Stelle auswählen, um Details und den Abgleich mit dem Profil zu sehen.</span></article>
+  </div>
+</main>
+<script>
+const $ = s => document.querySelector(s);
+let hideEx = true, jobs = [], selected = null;
+$('#chip-ex').addEventListener('click', () => { hideEx = !hideEx; $('#chip-ex').setAttribute('aria-pressed', hideEx); search(); });
+$('#f').addEventListener('submit', e => { e.preventDefault(); search(); });
+
+function esc(s) { return String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+function fmtDate(d) { if (!d) return ''; const [y,m,dd] = d.slice(0,10).split('-'); return `${dd}.${m}.${y}`; }
+function isNew(d) { return d && (Date.now() - new Date(d)) < 2*86400e3; }
+
+async function search() {
+  const p = new URLSearchParams(new FormData($('#f'))); p.set('mit_ausgeschlossenen', !hideEx);
+  $('#error').innerHTML = ''; $('#summary').textContent = 'Suche läuft …'; $('#list').innerHTML = '';
+  try {
+    const r = await fetch('/api/search?' + p); if (!r.ok) throw new Error((await r.json()).detail || r.statusText);
+    const j = await r.json(); jobs = j.treffer;
+    $('#summary').innerHTML = `<strong>${j.gesamt} Stellen</strong> für „${esc(p.get('was'))}“ in ${esc(p.get('wo'))} + ${p.get('umkreis')} km · ${jobs.length} angezeigt`;
+    $('#hidden').textContent = j.ausgeblendet ? `${j.ausgeblendet} ausgeblendet` : '';
+    renderList();
+  } catch (e) { $('#summary').textContent = ''; $('#error').innerHTML = `<div class="err">${esc(e.message)}</div>`; }
+}
+
+function renderList() {
+  $('#list').innerHTML = jobs.map(j => `
+    <button type="button" class="job" data-ref="${esc(j.refnr)}" aria-pressed="${selected === j.refnr}">
+      <span style="display:flex;justify-content:space-between;gap:12px"><span class="t">${esc(j.titel)}</span>
+        ${j.ausschluss ? `<span class="badge ex">${esc(j.ausschluss)}</span>` : isNew(j.veroeffentlicht) ? '<span class="badge neu">Neu</span>' : ''}</span>
+      <span style="color:#3B4148">${esc(j.firma)}</span>
+      <span class="meta"><span>${esc(j.ort)}${j.entfernung_km != null ? ' · ' + j.entfernung_km + ' km' : ''}</span><span>${fmtDate(j.veroeffentlicht)}</span><span>${j.vollzeit ? 'Vollzeit' : 'Teilzeit'} · ${esc(j.vertragsdauer)}</span>${j.gehalt_von ? `<span>${j.gehalt_von.toLocaleString('de-DE')}–${(j.gehalt_bis||j.gehalt_von).toLocaleString('de-DE')} €/Jahr</span>` : ''}</span>
+    </button>`).join('') || '<div class="card status">Keine Treffer. Suchbegriff kürzen, z. B. „Technischer Zeichner“ oder „CAD Elektrotechnik“.</div>';
+  document.querySelectorAll('.job').forEach(b => b.addEventListener('click', () => select(b.dataset.ref)));
+}
+
+async function select(ref) {
+  selected = ref; renderList();
+  $('#detail').innerHTML = '<span class="status">Lade Details …</span>';
+  try {
+    const r = await fetch('/api/job/' + encodeURIComponent(ref)); if (!r.ok) throw new Error((await r.json()).detail || r.statusText);
+    const j = await r.json(); const a = j.abgleich; const muss = a.anforderungen.filter(x => x.muss), kann = a.anforderungen.filter(x => !x.muss);
+    const row = x => `<li><span class="dot ${x.status}" role="img" aria-label="${x.status.replace('_',' ')}"></span><span><div style="font-weight:500">${esc(x.text)}</div><div class="note ${x.status}">${esc(x.beleg)}</div></span></li>`;
+    $('#detail').innerHTML = `
+      <span class="mono">Ausgewählte Stelle</span>
+      <h2 style="font-size:22px;margin:6px 0 2px">${esc(j.titel)}</h2>
+      <div style="color:#3B4148;font-size:16px">${esc(j.firma)} · ${esc(j.ort)}</div>
+      <dl class="facts" style="margin-top:16px">
+        <div><dt>Arbeitszeit</dt><dd>${j.vollzeit ? 'Vollzeit' : 'Teilzeit'}</dd></div>
+        <div><dt>Vertrag</dt><dd>${esc(j.vertragsdauer)}</dd></div>
+        <div><dt>Entfernung</dt><dd>${j.entfernung_km != null ? j.entfernung_km + ' km' : '–'}</dd></div>
+        <div><dt>Passung</dt><dd>${a.bewertung.passung != null ? a.bewertung.passung + ' %' : '–'}</dd></div>
+      </dl>
+      <div style="display:flex;flex-wrap:wrap;gap:10px;margin:16px 0">
+        <a class="btn" style="display:inline-flex;align-items:center;text-decoration:none" href="${esc(j.url)}" target="_blank" rel="noopener">Originalanzeige öffnen</a>
+        <button class="btn sec" type="button" disabled title="Kommt in Schritt 4">Anschreiben erstellen</button>
+      </div>
+      <h2>Muss-Anforderungen <span class="status" style="font-weight:400">· ${esc(a.bewertung.text)}</span></h2>
+      <ul class="req" style="margin:8px 0 18px">${muss.map(row).join('') || '<li><span class="status">Keine erkannt</span></li>'}</ul>
+      <h2>Kann-Anforderungen</h2>
+      <ul class="req" style="margin:8px 0 18px">${kann.map(row).join('') || '<li><span class="status">Keine erkannt</span></li>'}</ul>
+      <h2>Anzeige im Wortlaut</h2>
+      <div class="desc" style="margin-top:8px">${esc(j.beschreibung || '(keine Beschreibung in der API – bitte Originalanzeige öffnen)')}</div>`;
+  } catch (e) { $('#detail').innerHTML = `<div class="err">${esc(e.message)}</div>`; }
+}
+search();
+</script>
+</body>
+</html>
